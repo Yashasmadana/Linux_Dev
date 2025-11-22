@@ -1,7 +1,7 @@
 # 🐧 Embedded Linux Development Repository
 
 [![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)](https://www.kernel.org/)
-[![C](https://img.shields.io/badge/C-00599C?style=for-the-badge&logo=c&logoColor=white)](https://en.wikipedia.org/wiki/C_(programming_language))
+[![C](https://img.shields.io/badge/C-00599C?style=for-the-badge&logo=c&logoColor=white)](<https://en.wikipedia.org/wiki/C_(programming_language)>)
 [![C++](https://img.shields.io/badge/C++-00599C?style=for-the-badge&logo=cplusplus&logoColor=white)](https://isocpp.org/)
 [![ARM](https://img.shields.io/badge/ARM-0091BD?style=for-the-badge&logo=arm&logoColor=white)](https://www.arm.com/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](LICENSE)
@@ -39,6 +39,7 @@ This repository contains my journey and projects in **Embedded Linux Development
 - 🔐 **System Security & Optimization**
 
 ### Key Focus Areas:
+
 - Kernel space programming
 - Device driver development
 - Cross-compilation for ARM platforms
@@ -51,7 +52,7 @@ This repository contains my journey and projects in **Embedded Linux Development
 ## 📁 Repository Structure
 
 ```
-embedded-linux-dev/
+Linux-Dev/
 │
 ├── drivers/                    # Linux kernel drivers
 │   ├── gpio/                   # GPIO drivers
@@ -146,6 +147,7 @@ make
 ## 🔨 Projects
 
 ### 1. **GPIO LED Controller**
+
 A kernel module to control GPIO pins and blink LEDs with configurable patterns.
 
 **Status:** ✅ Complete  
@@ -153,6 +155,7 @@ A kernel module to control GPIO pins and blink LEDs with configurable patterns.
 **Location:** `drivers/gpio/led-controller/`
 
 ### 2. **I2C Temperature Sensor Driver**
+
 Device driver for common I2C temperature sensors (e.g., LM75, BME280).
 
 **Status:** 🚧 In Progress  
@@ -160,6 +163,7 @@ Device driver for common I2C temperature sensors (e.g., LM75, BME280).
 **Location:** `drivers/i2c/temp-sensor/`
 
 ### 3. **Custom Linux Distribution**
+
 Minimal Linux system built with Yocto for embedded deployment.
 
 **Status:** 🚧 In Progress  
@@ -167,6 +171,7 @@ Minimal Linux system built with Yocto for embedded deployment.
 **Location:** `build-systems/yocto/custom-distro/`
 
 ### 4. **Real-Time Data Acquisition**
+
 Multi-threaded application for sensor data collection with real-time constraints.
 
 **Status:** 📝 Planned  
@@ -196,12 +201,14 @@ git 2.34.1
 ### Target Hardware
 
 #### Raspberry Pi 4 Model B
+
 - **SoC:** Broadcom BCM2711 (ARM Cortex-A72)
 - **RAM:** 4GB LPDDR4
 - **OS:** Custom Buildroot / Yocto image
 - **Kernel:** Linux 6.1.x (with PREEMPT_RT patch)
 
 #### BeagleBone Black
+
 - **SoC:** TI Sitara AM335x (ARM Cortex-A8)
 - **RAM:** 512MB DDR3
 - **OS:** Debian-based custom image
@@ -270,13 +277,13 @@ make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- modules
 
 ### GPIO Pin Configuration
 
-| Pin | Function | Description |
-|-----|----------|-------------|
-| GPIO17 | LED Output | Status LED |
+| Pin    | Function     | Description               |
+| ------ | ------------ | ------------------------- |
+| GPIO17 | LED Output   | Status LED                |
 | GPIO27 | Button Input | User input with interrupt |
-| GPIO22 | PWM Output | Motor control |
-| GPIO23 | I2C SDA | Sensor communication |
-| GPIO24 | I2C SCL | Sensor communication |
+| GPIO22 | PWM Output   | Motor control             |
+| GPIO23 | I2C SDA      | Sensor communication      |
+| GPIO24 | I2C SCL      | Sensor communication      |
 
 ### Serial Console Connection
 
@@ -347,21 +354,25 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ## 📖 Resources
 
 ### Official Documentation
+
 - [Linux Kernel Documentation](https://www.kernel.org/doc/html/latest/)
 - [Yocto Project](https://www.yoctoproject.org/docs/)
 - [Buildroot User Manual](https://buildroot.org/downloads/manual/manual.html)
 
 ### Books
+
 - "Linux Device Drivers" by LDD3
 - "Mastering Embedded Linux Programming" by Chris Simmonds
 - "Linux Kernel Development" by Robert Love
 
 ### Communities
+
 - [Kernel Newbies](https://kernelnewbies.org/)
 - [Embedded Linux Wiki](https://elinux.org/)
 - [Stack Overflow - Embedded Linux](https://stackoverflow.com/questions/tagged/embedded-linux)
 
 ### My Learning Resources
+
 - [Personal Blog](https://yourblog.com) - Technical articles and tutorials
 - [YouTube Channel](https://youtube.com/yourchannel) - Video tutorials
 
@@ -369,14 +380,14 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## 📊 Project Status
 
-| Category | Progress | Status |
-|----------|----------|--------|
-| Kernel Modules | ████████░░ | 80% |
-| Device Drivers | ██████░░░░ | 60% |
-| System Programming | ████████░░ | 80% |
-| Build Systems | ████░░░░░░ | 40% |
-| Hardware Interfaces | ███████░░░ | 70% |
-| Documentation | █████░░░░░ | 50% |
+| Category            | Progress   | Status |
+| ------------------- | ---------- | ------ |
+| Kernel Modules      | ████████░░ | 80%    |
+| Device Drivers      | ██████░░░░ | 60%    |
+| System Programming  | ████████░░ | 80%    |
+| Build Systems       | ████░░░░░░ | 40%    |
+| Hardware Interfaces | ███████░░░ | 70%    |
+| Documentation       | █████░░░░░ | 50%    |
 
 ---
 
@@ -385,6 +396,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 This repository represents my journey in mastering embedded Linux development. Starting from basic kernel modules to complex driver development and custom Linux distributions.
 
 **Timeline:**
+
 - **Phase 1 (Months 1-2):** Linux fundamentals, basic modules
 - **Phase 2 (Months 3-4):** Device drivers, hardware interfaces
 - **Phase 3 (Months 5-6):** Build systems, real-time Linux
@@ -397,6 +409,7 @@ This repository represents my journey in mastering embedded Linux development. S
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ### Third-Party Code
+
 - Linux kernel code follows GPL v2
 - Some examples adapted from kernel documentation
 - Attribution provided where applicable
@@ -406,6 +419,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 👤 Contact
 
 **Your Name**
+
 - GitHub: [@yourusername](https://github.com/yourusername)
 - LinkedIn: [Your Profile](https://linkedin.com/in/yourprofile)
 - Email: your.email@example.com
