@@ -1,76 +1,97 @@
 import sqlite3
 import time
 import psutil
-import os
 from datetime import datetime
 
 DB_PATH = "/tmp/sysmon.db"
-
+INTERVAL = 10
 
 def init_database():
-    """Create database and table if not exists"""
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
+
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS metrics (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        timestamp TEXT NOT NULL,
+        timestamp INTEGER NOT NULL,
         cpu_percent REAL,
         memory_percent REAL,
         temp REAL,
         disk_percent REAL
     )
     """)
+
+    cursor.execute("""
+    CREATE INDEX IF NOT EXISTS idx_metrics_time
+    ON metrics(timestamp)
+    """)
+
+    cursor.execute("PRAGMA journal_mode=WAL;")
     conn.commit()
     conn.close()
-    
+
 def cleanup_old_data(conn):
-    """Keep only last 24 hours of data"""
-    cursor = conn.cursor()
-    cursor.execute("""
-    DELETE FROM metrics 
-    WHERE timestamp < datetime('now', '-24 hours')
-    """)
+    cutoff = int(time.time()) - 24 * 3600
+    conn.execute(
+        "DELETE FROM metrics WHERE timestamp < ?",
+        (cutoff,)
+    )
     conn.commit()
-    
+
 def collect_data():
-    """Collect system metrics"""
-    import psutil
-    import random
-    from datetime import datetime
-    
-    data = {
-        'timestamp': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-        'cpu_percent': psutil.cpu_percent(interval=1),
-        'memory_percent': psutil.virtual_memory().percent,
-        'temp': random.uniform(40.0, 75.0),  # Simulated
-        'disk_percent': psutil.disk_usage('/').percent
+    temps = psutil.sensors_temperatures()
+    temp = 0.0
+    if temps:
+        for k in temps:
+            if temps[k]:
+                temp = temps[k][0].current
+                break
+
+    return {
+        "timestamp": int(time.time()),
+        "cpu": psutil.cpu_percent(interval=1),
+        "memory": psutil.virtual_memory().percent,
+        "temp": temp,
+        "disk": psutil.disk_usage("/").percent,
     }
-    return data
 
 def log_data(conn, data):
-    """Insert data into database"""
-    cursor = conn.cursor()
-    cursor.execute("""
-    INSERT INTO metrics (timestamp, cpu_percent, memory_percent, temp, disk_percent)
-    VALUES (?, ?, ?, ?, ?)
-    """, (data['timestamp'], data['cpu_percent'], data['memory_percent'], 
-          data['temp'], data['disk_percent']))
+    conn.execute("""
+        INSERT INTO metrics
+        VALUES (?, ?, ?, ?, ?)
+    """, (
+        data["timestamp"],
+        data["cpu"],
+        data["memory"],
+        data["temp"],
+        data["disk"],
+    ))
     conn.commit()
-    
+
 def main():
     init_database()
-    conn = sqlite3.connect(DB_PATH)
-    
-    print("System Monitor Logger Started")
-    print("=" * 50)
-    
+    conn = sqlite3.connect(DB_PATH, timeout=10)
+
+    last_cleanup = 0
+    print("SysMon Logger running...")
+
     while True:
         data = collect_data()
-        print(f"{data['timestamp']} - CPU: {data['cpu_percent']:.1f}% | Memory: {data['memory_percent']:.1f}% | Temp: {data['temp']:.1f}°C | Disk: {data['disk_percent']:.1f}%")
+        print(
+            f"{datetime.fromtimestamp(data['timestamp'])} | "
+            f"CPU {data['cpu']:.1f}% | "
+            f"MEM {data['memory']:.1f}% | "
+            f"TEMP {data['temp']:.1f}°C | "
+            f"DISK {data['disk']:.1f}%"
+        )
+
         log_data(conn, data)
-        cleanup_old_data(conn)
-        time.sleep(10)
+
+        if time.time() - last_cleanup > 3600:
+            cleanup_old_data(conn)
+            last_cleanup = time.time()
+
+        time.sleep(INTERVAL)
 
 if __name__ == "__main__":
     main()
+
