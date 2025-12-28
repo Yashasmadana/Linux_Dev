@@ -9,9 +9,9 @@ INTERVAL = 10
 def init_database():
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
-
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS metrics (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
         timestamp INTEGER NOT NULL,
         cpu_percent REAL,
         memory_percent REAL,
@@ -19,15 +19,9 @@ def init_database():
         disk_percent REAL
     )
     """)
-
-    cursor.execute("""
-    CREATE INDEX IF NOT EXISTS idx_metrics_time
-    ON metrics(timestamp)
-    """)
-
-    cursor.execute("PRAGMA journal_mode=WAL;")
     conn.commit()
     conn.close()
+
 
 def cleanup_old_data(conn):
     cutoff = int(time.time()) - 24 * 3600
