@@ -1,0 +1,12 @@
+[Unit]
+Description=System Monitor Data Logger
+After=multi-user.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/sysmon-logger
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
