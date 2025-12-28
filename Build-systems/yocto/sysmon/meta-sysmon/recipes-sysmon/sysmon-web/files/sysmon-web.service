@@ -1,0 +1,13 @@
+[Unit]
+Description=System Monitor Web Dashboard
+After=network.target sysmon-logger.service
+Requires=sysmon-logger.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/sysmon-web
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
