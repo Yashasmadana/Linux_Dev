@@ -50,7 +50,7 @@ def collect_data():
 
 def log_data(conn, data):
     conn.execute("""
-        INSERT INTO metrics
+        INSERT INTO metrics (timestamp, cpu_percent, memory_percent, temp, disk_percent)
         VALUES (?, ?, ?, ?, ?)
     """, (
         data["timestamp"],
